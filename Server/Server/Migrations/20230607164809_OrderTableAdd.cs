@@ -21,7 +21,7 @@ namespace Server.Migrations
                     ReceiverCity = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     ReceiverAddress = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     CargoWeight = table.Column<double>(type: "double precision", nullable: false),
-                    CargoPickupDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    CargoPickupDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {

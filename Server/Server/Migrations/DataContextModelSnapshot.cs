@@ -28,7 +28,7 @@ namespace Server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("CargoPickupDate")
+                    b.Property<DateTimeOffset>("CargoPickupDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<double>("CargoWeight")

@@ -30,7 +30,7 @@ namespace DAL
         public double CargoWeight { get; set; }
 
         [Required]
-        public DateTime CargoPickupDate { get; set; }
+        public DateTimeOffset CargoPickupDate { get; set; }
 
         public Order()
         {

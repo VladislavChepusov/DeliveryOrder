@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Server.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230606160447_OrderTableAdd")]
+    [Migration("20230607164809_OrderTableAdd")]
     partial class OrderTableAdd
     {
         /// <inheritdoc />
@@ -31,7 +31,7 @@ namespace Server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("CargoPickupDate")
+                    b.Property<DateTimeOffset>("CargoPickupDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<double>("CargoWeight")

@@ -16,8 +16,8 @@ namespace Server.Services
             _context = context;
             _mapper = mapper;
         }
-
-        /// мб проверку вставить?
+        
+        // Получаем модель, мапим ее и добавляем в БД
         public async Task createAnOrder(OrderModel orderModel)
         {
             var dbOrder = _mapper.Map<Order>(orderModel);
@@ -26,9 +26,14 @@ namespace Server.Services
         }
 
 
-        // Вернуть список 
+        // Вернуть все что есть в и таблице  заказов 
         public async Task<IEnumerable<Order>> GetOrders() =>
                     await _context.Orders.AsNoTracking().ToListAsync();
 
+        // Вернуть запись по ID или null 
+        public async Task<Order> GetOrder(Guid ID) =>
+              await _context.Orders.FirstOrDefaultAsync(x => x.Id == ID);
+
+        
     }
 }
