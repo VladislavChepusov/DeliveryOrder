@@ -37,7 +37,9 @@
 - React
 - bootstrap
 
-
+Установлены пакеты npm:
+- react-router-dom
+- react-bootstrap bootstrap
  
 
 ## Запуса клиентской части 
