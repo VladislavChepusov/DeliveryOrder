@@ -2,7 +2,7 @@ import React from "react";
 import Header from "../Components/Header";
  
 import { Button } from "react-bootstrap";
-import { Client } from "../Logic/OrderAPIModels";
+import { Client,OrderModel } from "../Logic/OrderApiModels";
 
 
 import {
@@ -48,9 +48,35 @@ export default class CreatePage extends React.Component {
 
 
       handleSubmit(event) {
-        alert("eeeeeee");
-        var connect = new Client("https://localhost:7277");
+        console.log("11111111111111111 !!!");
+        event.preventDefault();
 
+        var connect = new Client("https://localhost:7085");
+        //let dateB = ;
+
+        var data = new OrderModel({
+          senderCity: this.state.SenderCity,
+          senderAddress: this.state.SenderAddress,
+          receiverCity: this.state.ReceiverCity,
+          receiverAddress: this.state.ReceiverAddress,
+          cargoWeight : this.state.CargoWeight,
+          cargoPickupDate: new Date(this.state.CargoPickupDate)
+        }) 
+        console.log("datasss !!!", data);
+
+        var response = connect.addOrder(data);
+
+        response
+        .then((res) => {
+          console.log("res !!!", res);
+        
+        })
+        .catch((error) => {
+          console.log("error !!!", error);
+         
+        });
+
+       event.preventDefault();
       }
 
   
@@ -177,7 +203,7 @@ export default class CreatePage extends React.Component {
                             name="CargoPickupDate"
                     />
 
-                    <div class="col text-center">
+                    <div className="col text-center">
                       <Button className="btn btn-default"  type="submit">Оформить</Button>
                     </div>
 

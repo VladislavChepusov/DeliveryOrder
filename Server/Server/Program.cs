@@ -8,7 +8,7 @@ internal class Program
     private static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-
+        var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         // Add services to the container.
 
         builder.Services.AddControllers();
@@ -29,9 +29,24 @@ internal class Program
 
         builder.Services.AddScoped<OrderService>(); // Добавление сервис заказов
 
+
+        //builder.Services.AddCors();
+      
+
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("AllowAllHeaders",
+                builder =>
+                {
+                    builder.AllowAnyOrigin()
+                           .AllowAnyHeader()
+                           .AllowAnyMethod();
+                });
+        });
+
         var app = builder.Build();
 
-
+      
         // Указываем,что при каждом запуске приложения должны выполняться миграции,чтобы обнолвения происходили сами
         // Создаем отдельный Scope в рамках которого вызываем миграции
         using (var serviceScope = ((IApplicationBuilder)app).ApplicationServices.GetService<IServiceScopeFactory>()?.CreateScope())
@@ -51,6 +66,12 @@ internal class Program
         }
 
         app.UseHttpsRedirection();
+
+        //app.UseCors("AllowLocalhost7027");
+
+        // подключаем CORS
+        // app.UseCors(builder => builder.AllowAnyOrigin());
+        app.UseCors("AllowAllHeaders");
 
         app.UseAuthorization();
 
