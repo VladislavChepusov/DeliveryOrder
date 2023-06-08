@@ -40,6 +40,7 @@
 Установлены пакеты npm:
 - react-router-dom
 - react-bootstrap bootstrap
+- mdb-react-ui-kit
  
 
 ## Запуса клиентской части 
