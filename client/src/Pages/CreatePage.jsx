@@ -122,13 +122,13 @@ export default class CreatePage extends React.Component {
         cargoWeight: this.state.CargoWeight,
         cargoPickupDate: new Date(this.state.CargoPickupDate)
       })
-      console.log("datasss !!!", data);
+     
 
       var response = connect.addOrder(data);
 
       response
         .then((res) => {
-          console.log("res !!!", res);
+   
           this.setState({
             redirect: true,
           });

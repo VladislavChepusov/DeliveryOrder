@@ -25,7 +25,6 @@ export default class OrderListPage extends React.Component {
 
     var Data = connect.getOrders();
     Data.then((res) => {
-      console.log("NewFeedPage", res);
       this.setState({
         Contents: res,
         isLoaded: true,
@@ -33,7 +32,7 @@ export default class OrderListPage extends React.Component {
       });
       //return res.id;
     }).catch((error) => {
-      console.log("NewFeedPageError", error);
+      console.log("PageError", error);
       this.setState({
         error: true,
         isLoaded: true,

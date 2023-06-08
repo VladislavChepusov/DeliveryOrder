@@ -25,7 +25,7 @@ export default class OrderPage extends React.Component {
     var Data = connect.getOrderById(this.props.id);
 
     Data.then((res) => {
-      console.log("New!!!!!!!!!!", res);
+  
 
       this.setState({
         Contents: res,
@@ -34,7 +34,7 @@ export default class OrderPage extends React.Component {
       });
 
 
-      console.log("так так ", this.state.Contents)
+    
       //return res.id;
     }).catch((error) => {
       console.log("!!!!!Error", error);

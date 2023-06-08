@@ -107,17 +107,13 @@ var Client = /** @class */ (function () {
         }
         ;
         if (status === 200) {
-            console.log("eeeeeeeeeeeeeee")
             var d = response.json();
             d.then(rende =>{
-                console.log("eeeeeeeeeeeeeee",rende)
-              
             })
-        
             return  d;
             /*
             return response.text().then(function (_responseText) {
-                console.log("пиздец",_responseText)
+             
                 return ;
             });
             */
