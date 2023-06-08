@@ -11,7 +11,7 @@ import {
   MDBCardBody,
   MDBInput,
 } from "mdb-react-ui-kit";
-
+import config from '../config.json'
 
 
 export default class CreatePage extends React.Component {
@@ -52,7 +52,7 @@ export default class CreatePage extends React.Component {
   }
 
   handleSubmit(event) {
-    var connect = new Client("https://localhost:7085");
+    var connect = new Client(config.URL);
     var valid = true;
 
     if (this.state.SenderCity.length > 100 || this.state.SenderCity.length < 1) {

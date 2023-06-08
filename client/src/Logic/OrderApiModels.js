@@ -107,9 +107,21 @@ var Client = /** @class */ (function () {
         }
         ;
         if (status === 200) {
+            console.log("eeeeeeeeeeeeeee")
+            var d = response.json();
+            d.then(rende =>{
+                console.log("eeeeeeeeeeeeeee",rende)
+              
+            })
+        
+            return  d;
+            /*
             return response.text().then(function (_responseText) {
-                return;
+                console.log("пиздец",_responseText)
+                return ;
             });
+            */
+            
         }
         else if (status !== 200 && status !== 204) {
             return response.text().then(function (_responseText) {
@@ -130,7 +142,6 @@ var Client = /** @class */ (function () {
         var options_ = {
             body: content_,
             method: "POST",
-            
             headers: {
                 "Content-Type": "application/json",
             }

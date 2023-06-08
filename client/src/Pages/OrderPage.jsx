@@ -3,13 +3,13 @@ import Header from "../Components/Header";
 import "../styles/myapp.css";
 import NotFoundPage from "./NotFoundPage";
 import config from "../config.json";
-import { Client, OrderModel } from "../Logic/OrderApiModels";
-import ListPost from "../Components/ListPost";
+import { Client } from "../Logic/OrderApiModels";
+import Content from "../Components/content";
 import {
   MDBContainer,
-
 } from "mdb-react-ui-kit";
-export default class OrderListPage extends React.Component {
+
+export default class OrderPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -22,18 +22,22 @@ export default class OrderListPage extends React.Component {
   // подгрузка данных
   componentDidMount(prevProps) {
     var connect = new Client(config.URL);
+    var Data = connect.getOrderById(this.props.id);
 
-    var Data = connect.getOrders();
     Data.then((res) => {
-      console.log("NewFeedPage", res);
+      console.log("New!!!!!!!!!!", res);
+
       this.setState({
         Contents: res,
         isLoaded: true,
         error: false,
       });
+
+
+      console.log("так так ", this.state.Contents)
       //return res.id;
     }).catch((error) => {
-      console.log("NewFeedPageError", error);
+      console.log("!!!!!Error", error);
       this.setState({
         error: true,
         isLoaded: true,
@@ -55,16 +59,23 @@ export default class OrderListPage extends React.Component {
       return (
         <>
           <Header />
-
           <MDBContainer
             fluid
             className="p-4 background-radial-gradient overflow-hidden"
             style={{ height: "100%" }}
           >
-            {this.state.Contents != null && (
-              <ListPost POSTS={this.state.Contents} />
-            )}
+            <Content
+              POSTINDEX={1}
+              id={this.state.Contents.id}
+              senderCity={this.state.Contents.senderCity}
+              senderAddress={this.state.Contents.senderAddress}
+              receiverCity={this.state.Contents.receiverCity}
+              receiverAddress={this.state.Contents.receiverAddress}
+              cargoWeight={this.state.Contents.cargoWeight}
+              time={new Date(this.state.Contents.cargoPickupDate)}
+            />
           </MDBContainer>
+
         </>
       );
     }
