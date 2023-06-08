@@ -17,7 +17,7 @@ export default class StartPage extends React.Component {
                     <Row>
                         <Col>
                             <Card style={{ width: "18rem", paddingBottom: "1rem" }}>
-                                <img src={two} class="card-img-top" />
+                                <img src={two} className="card-img-top" />
 
                                 <Card.Title className="CardText">
                                     Надежность и безопасность
@@ -33,7 +33,7 @@ export default class StartPage extends React.Component {
 
                         <Col>
                             <Card style={{ width: "18rem", paddingBottom: "1rem" }}>
-                                <img src={one} class="card-img-top" />
+                                <img src={one} className="card-img-top" />
 
                                 <Card.Title className="CardText">
                                     Широкий спектр услуг
@@ -65,7 +65,7 @@ export default class StartPage extends React.Component {
                     </Row>
                 </Container>
 
-                <div class="h-100 p-5 bg-light border rounded-3">
+                <div className="h-100 p-5 bg-light border rounded-3">
                     <h2>Наши тарифы на отправку грузов - дешевле не бывает!</h2>
                     <p>
                         Мы понимаем, что каждый клиент ценит свои деньги и всегда ищет

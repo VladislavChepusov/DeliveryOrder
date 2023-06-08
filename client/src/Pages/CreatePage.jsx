@@ -1,10 +1,8 @@
 import React from "react";
 import Header from "../Components/Header";
- 
+import { Navigate } from "react-router-dom";
 import { Button } from "react-bootstrap";
-import { Client,OrderModel } from "../Logic/OrderApiModels";
-
-
+import { Client, OrderModel } from "../Logic/OrderApiModels";
 import {
   MDBContainer,
   MDBRow,
@@ -17,78 +15,136 @@ import {
 
 
 export default class CreatePage extends React.Component {
-    constructor(props) {
-        super(props);
-        const now = new Date();
-        this.state = {
-          
-            SenderCity : "",
-            SenderAddress : "",
-            ReceiverCity : "",
-            ReceiverAddress : "",
-            CargoWeight : "",
-            CargoPickupDate : "",
+  constructor(props) {
+    super(props);
+    const now = new Date();
+    this.state = {
 
-            currentDateTime:`${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}T${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`    
-        
-          };
-          this.handleInputChange = this.handleInputChange.bind(this);
-          this.handleSubmit = this.handleSubmit.bind(this);
+      SenderCity: "",
+      SenderAddress: "",
+      ReceiverCity: "",
+      ReceiverAddress: "",
+      CargoWeight: "",
+      CargoPickupDate: "",
+      redirect: false,
+
+      errorSenderCity: null,
+      errorSenderAddress: null,
+      errorReceiverCity: null,
+      errorReceiverAddress: null,
+      errorCargoWeight: null,
+
+      currentDateTime: `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}T${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`
+
+    };
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+
+  handleInputChange(event) {
+    const target = event.target;
+    const value = target.value;
+    const name = target.name;
+    this.setState({
+      [name]: value,
+    });
+  }
+
+  handleSubmit(event) {
+    var connect = new Client("https://localhost:7085");
+    var valid = true;
+
+    if (this.state.SenderCity.length > 100 || this.state.SenderCity.length < 1) {
+      valid = false;
+      this.setState({
+        errorSenderCity: 'От 1 до 100 символов',
+      });
+    }
+    else{
+      this.setState({
+        errorSenderCity: null,
+      })
+    }
+    if (this.state.ReceiverCity.length > 100 || this.state.ReceiverCity.length < 1) {
+      valid = false;
+      this.setState({
+        errorReceiverCity: 'От 1 до 100 символов',
+      });
+    }
+    else{
+      this.setState({
+        errorReceiverCity: null,
+      })
     }
 
-    
-    handleInputChange(event) {
-        const target = event.target;
-        const value = target.value;
-        const name = target.name;
-        this.setState({
-          [name]: value,
-        });
-      }
+    if (this.state.SenderAddress.length > 200 || this.state.SenderAddress.length < 1) {
+      valid = false;
+      this.setState({
+        errorSenderAddress: 'От 1 до 200 символов',
+      });
+    }
+    else{
+      this.setState({
+        errorSenderAddress: null,
+      })
+    }
+    if (this.state.ReceiverAddress.length > 200 || this.state.ReceiverAddress.length < 1) {
+      valid = false;
+      this.setState({
+        errorReceiverAddress: 'От 1 до 200 символов',
+      });
+    }
+    else{
+      this.setState({
+        errorReceiverAddress: null,
+      })
+    }
+    if (this.state.CargoWeight > 99999 || this.state.CargoWeight < 0) {
+      valid = false;
+      this.setState({
+        errorCargoWeight: 'Вес не может превышать 99999 кг',
+      });
+    }
+    else{
+      this.setState({
+        errorCargoWeight: null,
+      })
+    }
 
+    if (valid) {
+     
+      var data = new OrderModel({
+        senderCity: this.state.SenderCity,
+        senderAddress: this.state.SenderAddress,
+        receiverCity: this.state.ReceiverCity,
+        receiverAddress: this.state.ReceiverAddress,
+        cargoWeight: this.state.CargoWeight,
+        cargoPickupDate: new Date(this.state.CargoPickupDate)
+      })
+      console.log("datasss !!!", data);
 
-      handleSubmit(event) {
-        console.log("11111111111111111 !!!");
-        event.preventDefault();
+      var response = connect.addOrder(data);
 
-        var connect = new Client("https://localhost:7085");
-        //let dateB = ;
-
-        var data = new OrderModel({
-          senderCity: this.state.SenderCity,
-          senderAddress: this.state.SenderAddress,
-          receiverCity: this.state.ReceiverCity,
-          receiverAddress: this.state.ReceiverAddress,
-          cargoWeight : this.state.CargoWeight,
-          cargoPickupDate: new Date(this.state.CargoPickupDate)
-        }) 
-        console.log("datasss !!!", data);
-
-        var response = connect.addOrder(data);
-
-        response
+      response
         .then((res) => {
           console.log("res !!!", res);
-        
+          this.setState({
+            redirect: true,
+          });
         })
         .catch((error) => {
           console.log("error !!!", error);
-         
         });
-
-       event.preventDefault();
-      }
-
-  
-
-
+    }
+    event.preventDefault();
+  }
 
   render() {
-  
     return (
       <>
+         {this.state.redirect ? <Navigate push to="/orders" /> : null}
         <Header />
-
         <MDBContainer
           fluid
           className="p-4 background-radial-gradient overflow-hidden"
@@ -112,9 +168,12 @@ export default class CreatePage extends React.Component {
             <MDBCol md="6" className="position-relative">
               <MDBCard className="my-5 bg-glass">
                 <MDBCardBody className="p-5">
-                <form onSubmit={this.handleSubmit}>
+                  <form onSubmit={this.handleSubmit}>
                     <MDBRow>
                       <MDBCol col="6">
+                        <div className="text-danger">
+                          {this.state.errorSenderCity}
+                        </div>
                         <MDBInput
                           wrapperClass="mb-4"
                           label="Город отправителя"
@@ -124,15 +183,15 @@ export default class CreatePage extends React.Component {
                           onChange={this.handleInputChange}
                           name="SenderCity"
                           required
-
                         />
                       </MDBCol>
-
                       <MDBCol col="6">
+                        <div className="text-danger">
+                          {this.state.errorSenderAddress}
+                        </div>
                         <MDBInput
                           wrapperClass="mb-4"
                           label="Адрес отправителя"
-
                           type="text"
                           id="SenderAddress"
                           value={this.state.SenderAddress}
@@ -142,9 +201,11 @@ export default class CreatePage extends React.Component {
                         />
                       </MDBCol>
                     </MDBRow>
-
                     <MDBRow>
                       <MDBCol col="6">
+                        <div className="text-danger">
+                          {this.state.errorReceiverCity}
+                        </div>
                         <MDBInput
                           wrapperClass="mb-4"
                           label="Город получателя"
@@ -158,12 +219,14 @@ export default class CreatePage extends React.Component {
                       </MDBCol>
 
                       <MDBCol col="6">
+                        <div className="text-danger">
+                          {this.state.errorReceiverAddress}
+                        </div>
                         <MDBInput
                           wrapperClass="mb-4"
                           label="Адрес получателя"
                           id="ReceiverAddress"
                           type="text"
-              
                           value={this.state.ReceiverAddress}
                           onChange={this.handleInputChange}
                           name="ReceiverAddress"
@@ -171,7 +234,9 @@ export default class CreatePage extends React.Component {
                         />
                       </MDBCol>
                     </MDBRow>
-
+                    <div className="text-danger">
+                      {this.state.errorCargoWeight}
+                    </div>
                     <MDBInput
                       wrapperClass="mb-4"
                       label="Вес груза"
@@ -179,8 +244,7 @@ export default class CreatePage extends React.Component {
                       type="number"
                       step="0.01"
                       min="0"
-                      max="9999"
-
+                      max="99999"
                       value={this.state.CargoWeight}
                       onChange={this.handleInputChange}
                       name="CargoWeight"
@@ -192,26 +256,18 @@ export default class CreatePage extends React.Component {
                       label="Дата забора груза"
                       id="CargoPickupDate"
                       type="datetime-local"
-
-
-                
-                            min={this.state.currentDateTime}
-                           
-                            required 
-                            value={this.state.CargoPickupDate}
-                            onChange={this.handleInputChange}
-                            name="CargoPickupDate"
+                      min={this.state.currentDateTime}
+                      required
+                      value={this.state.CargoPickupDate}
+                      onChange={this.handleInputChange}
+                      name="CargoPickupDate"
                     />
 
                     <div className="col text-center">
-                      <Button className="btn btn-default"  type="submit">Оформить</Button>
+                      <Button className="btn btn-default" type="submit">Оформить</Button>
                     </div>
-
-                   
-
                   </form>
 
- 
                 </MDBCardBody>
               </MDBCard>
             </MDBCol>
